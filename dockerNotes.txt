@@ -1,0 +1,57 @@
+## ##############################
+## Part 1 - from django app and mock server in Docker
+## ##############################
+## start asdf core container from image
+
+sudo docker image ls
+sudo docker ps (-a)
+sudo docker start (-ai) abc123
+sudo docker run -d -p 1080:1080 asdf_mock_server
+sudo docker stop asdf_mock_server
+
+## start gen 1 demo app
+
+sudo docker run -d -p 8000:8000 demoapp
+docker run --network="host" -d -p 8000:8000 ardis_demo
+
+## build a docker image from Dockerfile location
+
+sudo docker build -t myImageName .
+
+## stop running processes / containers
+
+sudo docker stop <processId>
+sudo docker rm <processId>
+
+## remove image
+
+sudo docker rmi <imageId>
+
+
+
+
+https://docs.gitlab.com/ee/ci/quick_start/
+https://docs.gitlab.com/ee/ci/yaml/README.html
+https://docs.gitlab.com/runner/#features
+https://docs.gitlab.com/runner/configuration/autoscale.html
+https://docs.gitlab.com/runner/executors/docker.html
+
+
+https://medium.com/backticks-tildes/how-to-dockerize-a-django-application-a42df0cb0a99
+https://medium.com/@alfianeffendy/deployment-automation-with-gitlab-runner-aws-ecs-docker-c3007908f358
+https://about.gitlab.com/2016/08/26/ci-deployment-and-environments/
+
+## ##############################
+## Part 2 - from linkedin learning "Docker for .NET devs with VS"
+## ##############################
+
+docker image ls
+docker rmi <enough of ImageID to make it unique in the list of images>
+
+docker run -it imageName:tag /bin/bash
+-i: run interactively .... can interact with container once running
+-t: psuedo-TTY shell in terminal to container
+
+/bin/bash : command that is run on processId 1 in new container
+
+docker container ls
