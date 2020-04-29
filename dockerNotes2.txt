@@ -65,9 +65,18 @@ good for debugging, DBA, etc
 
 docker exec -ti runningContainerNameOrId bash - starts a bash process in a running container
 
+==================================
+MANAGE CONTAINERS
+==================================
 
+docker logs containerId/Name
+(output of containers preserved)
 
+docker kill containerName/Id - stop
 
+docker rm containerName/Id - remove
+
+docker run --memory maximum-allowed-memory image-name command (constrain memory resources)
 
 
 
