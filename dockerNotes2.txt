@@ -48,6 +48,23 @@ passing multiple commands to a container's bash: (semicolon separates "first do 
 
 docker run -ti ubuntu bash -c "sleep 3; echo all done"
 
+detached containers (-d): leave them running, and let them go/continue.
+
+docker run -d -ti ubuntu bash
+(then, docker ps to see the running container - and get its ID or name)
+
+docker attach containerId/name
+
+ctrl-P, ctrl-Q - exits the container and leaves it running
+
+add another process to a running container:
+
+docker exec 
+(can't add ports/volumes etc.)
+good for debugging, DBA, etc
+
+docker exec -ti runningContainerNameOrId bash - starts a bash process in a running container
+
 
 
 
