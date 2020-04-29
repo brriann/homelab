@@ -1,1 +1,12 @@
 
+docker images (imageName:tag, or imageId)
+
+Image --> docker run --> turns image into a running container, with a running process
+
+docker run -it ubuntu:latest bash (terminal interactive)
+
+cat /etc/lsb-release (Ubuntu distro information)
+
+exit a running -it bash container: "exit" or Ctrl+D
+
+
