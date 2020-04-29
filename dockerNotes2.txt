@@ -78,6 +78,19 @@ docker rm containerName/Id - remove
 
 docker run --memory maximum-allowed-memory image-name command (constrain memory resources)
 
+docker run --cpu-shares (relative to other containers)
+
+docker run --cpu-quota (fixed limit)
+
+(most orchestrations require cpu limits)
+
+** Dont let your containers fetch dependencies when they start.
+- make your containers include the dependencies, inside the containers themselves.
+- don't leave important things in unnamed stopped containers
+
+==================================
+CONTAINER NETWORKING
+==================================
 
 
 
