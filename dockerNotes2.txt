@@ -1,3 +1,4 @@
+DOCKER FLOW 1 : IMAGE -> CONTAINER
 
 docker images (imageName:tag, or imageId)
 
@@ -9,4 +10,21 @@ cat /etc/lsb-release (Ubuntu distro information)
 
 exit a running -it bash container: "exit" or Ctrl+D
 
+docker ps (view running containers)
 
+Image: a fixed point, where status is known, and you can always start from
+
+DOCKER FLOW 2 : CONTAINER -> IMAGE
+
+docker ps -a (lists all containers, including stopped)
+docker ps -l (lists the last exited container)
+
+- STATUS: Exited (0) .... exit code can be useful for diagnostics
+
+docker commit: creates an image from a stopped container
+docker image ls (docker images)
+
+docker tag imageId my-image-name
+docker image ls - will now see new iamge name under REPOSITORY
+
+docker commit <containerName> <newImageName> --shortcut that rolls docker tag into docker commit
