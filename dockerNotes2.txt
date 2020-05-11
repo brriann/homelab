@@ -264,6 +264,28 @@ CMD ["/bin/nano", "/notes.txt"]
 FROM: which image to (possibly download) and start from
 -must be first command in Dockerfile
 
+MAINTAINER: documentation, defines author
+-MAINTAINER John Doe <johndoe@gmail.com>
+
+RUN: runs command line, waits for it to finish, saves result
+-RUN unzip install.zip /opt/install
+-RUN echo hello docker
+
+ADD: adds local files, contents of tar archives (ADD automatically uncompresses tar files), and URL contents
+ADD sourcePath /containerDestination
+- ADD run.sh /run.sh
+- ADD project.tar.gz /install/ 
+- ADD https://project.example.com/download/1.0/project.rpm /project/
+
+ENV: sets environment variables during the build AND when running the result
+-ENV DB_HOST=db.production.example.com
+-ENV DB_PORT=5432
+
+ENTRYPOINT: specifies START OF command to run
+- anything typed after docker run imageName would be passed as arguments to the ENTRYPOINT command
+
+CMD: specifies ENTIRE command to run
+
 
 
 
