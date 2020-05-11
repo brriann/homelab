@@ -144,6 +144,56 @@ docker network connect existingServerName existingContainerName
 (can connect containers to multiple docker networks)
 
 
+LEGACY LINKING
+
+-link all ports, but only one way
+-secret environment variables are shared only one way
+-startup order dependent
+-restarting containers may/may not break links
+
+docker run -e ENVVARNAME=environmentVariableValue
+
+docker run --link runningContainerName
+
+(in linked container)
+>> env
+(will see linked container's env variables here in addition to container's env)
+
+
+IMAGES
+
+tagging images : give them names
+docker commit tags images for you
+
+docker commit containerName newImageName:newImageTag
+
+(full name)
+registry.example.com:port/organization/image-name:version-tag
+
+organization/image-name is usually enough
+
+docker pull - invoked by docker run
+
+docker push :: 
+
+docker rmi imageName:tagName
+
+# TODO: write a shell script to remove docker images of type sameImageName:differentTagNames
+
+
+VOLUMES
+-virtual "discs" to store and share data between containers, and containers-host
+-Persistent (data will remain on host after container stops)
+-Ephemeral (will persist until a container is not using them)
+
+Volumes are not part of images.  They are for local (to a host) data.
+
+
+
+
+
+
+
 
 
 
