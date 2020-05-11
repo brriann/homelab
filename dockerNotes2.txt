@@ -92,10 +92,33 @@ docker run --cpu-quota (fixed limit)
 CONTAINER NETWORKING
 ==================================
 
+- programs in containers are isolated from internet by default
+- you can group containers into "private" networks
+
+- EXPOSE TCP PORTS TO LET CONNECTIONS IN
+- specify internal port (to container) and external port
+
+docker run --rm -ti -p 45678:45678 -p 45679:45769 --name bfost-server ubuntu bash
+>> nc -lp 45678 | nc -lp 45679 (netcat)
+(nc -lp = netcat listen port)
+
+(client 1: nc localhost 45678)
+>> a message
+
+(client 2: nc localhost 45679)
+>> returned: a message
+
+using netcat with 2 clients: a message is passed into a local port, to that port on the docker conatainer, back out another port of the container, and returned at that local port on the 2nd client
+
+host.docker.internal (used for Docker Desktop on Mac)
+(client x: nc host.docker.internal port# - reference host machine port)
 
 
+-p 45678:45678 vs -p 45678 ... 
 
+docker port containerName : will show which port on local host machine container's port 45678 is mapped to
 
-
+EXPOSE UDP PORTS
+docker run -p 1234:1234/udp
 
 
