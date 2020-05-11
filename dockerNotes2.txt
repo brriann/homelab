@@ -224,21 +224,45 @@ docker build -t name-of-container-to-build . (. = path to dockerfile, aka curren
 -each line of a dockerfile takes image from previous line, and makes another image. previous image is unchanged
 (large files shouldn't span lines - or the images will be huge)
 
-- each step of running a dockerfile is cached
+- each step of running a Dockerfile is cached
 - watching build output for "using cache" 
-- docker can skip lines that weren't changed since last time dockerfile was built
+- docker can skip lines that weren't changed since last time Dockerfile was built
 - if a line is "download big file" - it may not be re-downloaded each time. 
 - *** THE PARTS THAT CHANGE THE MOST, BELONG AT THE END OF THE DOCKERFILE ***
-- dockerfiles are not shell scripts. syntax is similar.
+- Dockerfiles are not shell scripts. syntax is similar.
 -- processes started on one line, will not run on the next line
 --- process will run in that line's container, be saved into an image, and then stop before container on next line is started
 - CONTAINER PER LINE
 - ENV command: environment variable set will be set on next line as well
 - EACH LINE IN A DOCKERFILE IS ITS OWN CALL TO DOCKER RUN, AND ITS OWN CALL TO DOCKER COMMIT
 
+BUILDING A DOCKERFILE
 
+FROM : 1st line : which image to start with / where to begin
+RUN : a bash command to run
+CMD : set a command to run when image is started
 
+example 1: 
 
+FROM busybox
+RUN echo "building simple docker image."
+CMD echo "Hello Container"
+
+example 2:
+
+FROM debian:sid
+RUN apt-get -y update
+RUN apt-get install nano
+CMD ["/bin/nano", "/tmp/notes"] aka CMD "nano" "/tmp/notes"
+
+example 3: (debianimage was created in example 2)
+
+FROM debianimage
+ADD notes.txt /notes.txt (ADD localHostFile containerDestination)
+CMD ["/bin/nano", "/notes.txt"]
+
+FROM: which image to (possibly download) and start from
+-must be first command in Dockerfile
 
 
 
