@@ -182,11 +182,64 @@ docker rmi imageName:tagName
 
 
 VOLUMES
+
 -virtual "discs" to store and share data between containers, and containers-host
 -Persistent (data will remain on host after container stops)
 -Ephemeral (will persist until a container is not using them)
 
 Volumes are not part of images.  They are for local (to a host) data.
+
+Share a folder from host to container:
+docker run -v /path/to/dir/on/host:/pathWithinContainer : share a volume with a container on startup
+
+Share a file from host to container: (must exist before the container is started)
+
+Sharing Data between Containers:
+
+docker run -v /my-container-dir-name --name container1
+
+docker run --volumes-from container1 (this container will have access to the volume defined above)
+
+Volumes created in this manner will persist past the ORIGINAL container being exited, as long as another container has inherited it by --volumes-from.  Once the last container using it is exited, the VOLUME WILL BE DELETED
+
+
+DOCKER REGISTRIES
+
+-registries manage and distribute images
+-Docker the company runs registries. you can also run your own privately.
+
+docker search imageName (docker search node, docker search ubuntu)
+
+hub.docker.com - search images here
+
+
+==================================
+BUILDING DOCKER IMAGES
+==================================
+
+Dockerfile - small program that describe how to build a docker image
+
+docker build -t name-of-container-to-build . (. = path to dockerfile, aka current directory)
+
+-each line of a dockerfile takes image from previous line, and makes another image. previous image is unchanged
+(large files shouldn't span lines - or the images will be huge)
+
+- each step of running a dockerfile is cached
+- watching build output for "using cache" 
+- docker can skip lines that weren't changed since last time dockerfile was built
+- if a line is "download big file" - it may not be re-downloaded each time. 
+- *** THE PARTS THAT CHANGE THE MOST, BELONG AT THE END OF THE DOCKERFILE ***
+- dockerfiles are not shell scripts. syntax is similar.
+-- processes started on one line, will not run on the next line
+--- process will run in that line's container, be saved into an image, and then stop before container on next line is started
+- CONTAINER PER LINE
+- ENV command: environment variable set will be set on next line as well
+- EACH LINE IN A DOCKERFILE IS ITS OWN CALL TO DOCKER RUN, AND ITS OWN CALL TO DOCKER COMMIT
+
+
+
+
+
 
 
 
