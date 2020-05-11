@@ -315,6 +315,48 @@ USER: sets which user the container will run as
 
 - USER useful for shared network volumes)
 
+MULTI-PROJECT DOCKER FILES
+
+-we want Dockerfiles to be complete. we also want them to be small.
+-make daily vs production Dockerfiles? (they'll get out of sync!)
+
+-multi-stage builds
+
+- example A (this is a 171MB image that doesn't really accomplish much)
+
+FROM ubuntu:16.04
+RUN apt-get update
+RUN apt-get -y install curl
+RUN curl https://google.com | wc -c > google-size
+ENTRYPOINT echo google is this big; cat google-size
+
+- example B (splitting example A into 2 parts)
+
+FROM ubuntu:16.04 as builder
+RUN apt-get update
+RUN apt-get -y install curl
+RUN curl https://google.com | wc -c > google-size 
+
+FROM alpine
+COPY --from=builder /google-size /google-size
+ENTRYPOINT echo google is this big; cat google-size
+
+-size of this example B image is way smaller.  (excess size/baggage in builder, seems to not persist in image?)
+
+AVOID GOLDEN IMAGES
+- include installer in your project
+- if you depend on a piece of software to build your image,check it into your image
+- have a canonical build that builds everything FROM SCRATCH
+- DON'T log in, fix the config file, and save the image over the same now. you now have a golden image.
+- tag your builds with the git hash of the code that built it
+- use small base images, such as Alpine
+- build images you share publicly from Dockerfiles.
+- don't leave passwords in layers of your Dockerfiles. delete files in the same step.
+
+
+
+
+
 
 
 
