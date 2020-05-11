@@ -285,6 +285,35 @@ ENTRYPOINT: specifies START OF command to run
 - anything typed after docker run imageName would be passed as arguments to the ENTRYPOINT command
 
 CMD: specifies ENTIRE command to run
+- anything typed after docker run imageName will replace the CMD command
+
+-if your container acts like a command-line program, you can use ENTRYPOINT
+-CMD will probably be used most often.
+
+Shell Form vs Exec Form (for ENTRYPOINT, RUN, CMD)
+-shell: nano notes.txt
+-exec: ["/bin/nano", "notes.txt"]
+
+-shell form is run in a shell (duh)
+-exec form causes the exec to be run directly, not surrounded in a shell like bash - SO ITS MORE EFFICIENT
+
+EXPOSE: maps a port into the container
+-EXPOSE 8080 (similar to -p docker arg)
+
+VOLUME: defines shared (2 arg) or ephemeral (1 arg) volumes
+-VOLUME ["/host/path/" "/container/path/"] - shared volume from host
+-VOLUME ["/shared-data"] - ephemeral volume created on container
+
+-generally avoid host-shared folders/files in Dockerfile. the Dockerfile will only run on your host machine!
+
+WORKDIR: sets directory the container starts in (for remainder of Dockerfile, and for the container startup
+-WORKDIR /install/
+
+USER: sets which user the container will run as
+-USER brian
+-USER 1000
+
+- USER useful for shared network volumes)
 
 
 
