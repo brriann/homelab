@@ -471,6 +471,116 @@ Unix Storage in Brief
 -filesystems (which bits on the drive, are part of which part, of which file)
 -FUSE filesystems and network filesystems
 
+Docker storage built on COWs (COPY ON WRITE)
+-"cow with spots" analogy: spots are built separately, and layered on cow, when container is started
+-but the blank cow image remains for other users (aka other containers) to use
+- write to your own layer
+
+The contents of layers are moved between containers in gzip files
+Containers are independent of the storage engine
+Any container can be loaded almost anywhere
+It is possible to run out of layers on some of the storage engines
+
+Volumes and Bind Mounting
+- Linux VFS (Virtual File System)
+-mounting devices on the VFS
+- / the starting point
+-mounting directories on the VFS
+
+--privileged=true (exceed standard Docker container permissions)
+
+mount -o bind dirA dirB
+(manipulate file system : mounts dirA on top of dirB)
+
+umount dirB
+(dir's will be back to original state
+
+-getting mount order correct is important: -v volume order is important
+-Docker mounting volumes always mounts host's filesystem over the guest 
+
+
+
+==================================
+ORCHESTRATION : BUILDING SYSTEMS
+==================================
+
+Docker Registry:
+-is a program
+-stores layers and images
+-service listening on port 5000 (usually)
+-maintains an index and search tags
+-authorizes/authenticates connections
+
+official Python Docker Registry
+Nexus
+can run registry in Docker
+
+Starting the Docker Registry as a Docker service, and tagging+pushing an image to it:
+
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+docker tag image:tag localhost:5000/mycompany/my-ubuntu:99
+docker push localhost:5000/mycompany/my-ubuntu:99
+
+Storage Options for Registry
+-local storage
+-docker trusted registry
+-Amazon ECR
+-google cloud container registry
+-microsoft container registry
+
+docker save
+docker load
+
+docker save -o my-images.tar.gz imageName:tagName imageName2 imageName3:tagName
+docker rmi imageName:tagName imageName2 imageName3:tagName
+docker load -i my-images.tar.gz
+
+INTRO TO ORCHESTRATION
+-many orchestration systems for Docker
+-orchestration systems: start containers, keep them running, restart if they fail
+-service discovery : allow containers to find each other, to find restarted containers
+-resource allocation: match containers to computers
+
+Docker Compose
+-standard for single machine coordination
+-designed for testing and development
+-brings up all your containers, volumes, etc with one command
+
+Kubernetes
+-containers run programs
+-pods group containers together
+-servides make pods available to others
+-labels are used for (very) advanced service discovery
+-very flexible overlay networking
+-runs equally well on own hardware, cloud provider etc
+
+kubernetes.io
+
+kubectl command : scripting large operations possible
+
+AWS ECS (EC2 Container Service)
+-task definitions
+--define a set of containers that always run together
+-tasks
+--set of containers running together "right now" on a single host
+-services
+--ensures that a task is running
+
+ECS advantages
+-connects load balancers (ELBs) to services
+-can create own host instances in AWS
+-make your instances start the agent, join the cluster
+-pass the docker control socket into the agent
+-provides docker repos - easy to run your own repo
+-containers and tasks can be part of CloudFormation stacks
+
+aws.amazon.com/ecs
+
+AWS Fargate (automated ECS)
+Docker Swarm
+Google Kubernetes Engine
+Azure Kubernetes Engine
+
 
 
 
