@@ -355,14 +355,121 @@ AVOID GOLDEN IMAGES
 
 
 
+==================================
+UNDER THE HOOD
+==================================
+
+Kernel
+-respond to messages from hardware
+-start/schedule programs
+-control/organize storage (kernel's filesytem)
+-pass messages between programs
+-allocates resources, memory, CPU, network, etc
+
+Docker manages the Kernel.
+-Docker written in Go (a systems language)
+-manages kernel features
+--cgroups (control groups) to contain processes
+--namespaces to contain networks
+--"copy-on-write" filesystems to build images
+
+Docker:
+-makes scripting distributed systems easy
+
+Docker Control Socket:
+-Docker is two programs: client and server
+-server recieves commands over a socket (over network, or through a file)
+-client can run Docker inside itself
+
+Docker client <-->socket<-->Docker Server-Docker containers
+
+Docker client can be run inside a Docker container as well. sharing the Docker server program
+
+Giving Docker client a hook to control its own server:
+docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock docker sh
+>> docker run -ti --rm ubuntu bash
+>>>docker info
+a client within a docker container, controlling a server outside that container
+
+NETWORKING AND NAMESPACES
+
+Networking summary:
+Ethernet layer (frames moved on a wire/wifi)
+IP layer (moves packets on a local network)
+Routing (forwards packets between networks)
+Ports (address particular programs on a computer)
+
+Docker uses bridges to create virtual networks in your host computer
+(function like software switches)
+(they control the ethernet layer)
+--net=host turns off bridging protection
+
+docker run -ti --rm --net=host ubuntu bash
+>> apt-get update && apt-get install bridge-utils
+>> brctl show 
+(docker0 : virtual network used by all machines in Docker that don't have their own network
+
+Routing
+-how does Docker move packets between networks, and between containers and the internet
+-uses iptables command to create "firewall" rules
+-NAT (Network Address Translation)
+-change source address of a packet on way out
+-change destination address of packet on way back in
+
+sudo iptables -n -L -t nat
+
+docker run -ti --rm --net=host --privileged=true ubuntu bash
+>> 
+
+docker run -ti --rm -p 8080:8080 ubuntu bash (starting container with ports to forward)
+
+privileged container will now see a port forwarding rule
+"tcp dpt:8080 to:172.170.0.2:8080"
+
+EXPOSING PORTS IS JUST PORT FORWARDING.
+
+Namespaces allow processes to be attached to private network segments
+-private networks are bridge into a shared network with the rest of the containers
+-containers have virtual network "cards"
+-containers get their own copy of the networking stack
+-so, containers can't reach in and configure other containers
 
 
+PROCESSES AND GROUPS
+
+Processes in Linux
+-processes come from other processes - parent-child relationship
+-when a child process exits, it returns an exit code to parent
+-Process Zero is special, called init, the process that starts the rest
+
+Docker container starts with an init process, and vanishes when that process exits
+
+To see the ProcessId of a running container:
+
+term1
+docker run -ti --rm --name hello1 ubuntu bash
+
+term2
+docker inspect --format '{{.State.Pid}}' hello1
+>>5498 (will output a process Id)
 
 
+docker run -ti --rm --privileged=true --pid=host ubuntu bash
+>> kill 5498 (will see the docker container with that process Id running, stop)
+
+Resource Limiting
+-scheduling CPU time
+-memory allocation limits
+-inherited limitation and quotas
 
 
+STORAGE
 
-
+Unix Storage in Brief
+-actual storage devices (hard drives, network storage drives etc)
+-logical storage devices (these 2 drives = 1 drive ... this 1 drive = 432 drives, these 4 drives = a RAID array)
+-filesystems (which bits on the drive, are part of which part, of which file)
+-FUSE filesystems and network filesystems
 
 
 
