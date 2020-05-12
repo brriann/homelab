@@ -582,7 +582,10 @@ Google Kubernetes Engine
 Azure Kubernetes Engine
 
 
-
-
+# TODO's
+-get a service or two running Docker (MongoDB, Node, Redis....)
+-learn more about Dockerfiles
+-run a production service on local PC
+-make a personal development image ***
 
 
